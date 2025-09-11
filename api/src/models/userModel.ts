@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 
-import { UserSchema } from "src/schemas/userSchema";
+import { UserSchema } from "schemas/userSchema";
 
 UserSchema.pre('save', async function (next) {
     const salt = await bcrypt.genSalt(10);
