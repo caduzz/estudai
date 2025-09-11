@@ -4,16 +4,20 @@ class UserService {
   private _connection = UserModel;
 
   async createUser(userData: { email: string; password: string; name: string }) {
+    const existingUser = await this.findByEmail(userData.email);
+
+    if (existingUser) {
+      return { statusCode: 400, message: "Email already in use" };
+    }
+
     const newUser = new this._connection(userData);
-    return newUser.save();
+    newUser.save();
+
+    return { statusCode: 201, message: "User created successfully", user: newUser };
   }
 
   async findByEmail(email: string) {
     return this._connection.findOne({ email });
-  }
-
-  async updateUserPassword(email: string, newPassword: string) {
-    return this._connection.updateOne({ email }, { password: newPassword });
   }
 }
 
