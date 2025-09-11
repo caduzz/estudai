@@ -1,6 +1,6 @@
 import express from 'express';
-
 import cors from 'cors'
+import userRouter from './routes/userRoute';
 
 class App {
   public app: express.Express;
@@ -10,7 +10,8 @@ class App {
 
     this.config();
     
-    this.app.get('/', (req, res) => res.json({ ok: true }));
+    this.app.get('/', (_req, res) => res.json({ ok: true }));
+    this.app.use('/users', userRouter);
   }
 
   private config():void {
