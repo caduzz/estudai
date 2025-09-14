@@ -1,5 +1,6 @@
 import { UserModel } from "../models/userModel";
 import { validateUser } from "./validation/userSchema";
+import { UserUpdateData } from "interfaces/userUpdateInterface";
 
 class UserService {
   private _connection = UserModel;
@@ -25,6 +26,22 @@ class UserService {
 
   async findByEmail(email: string) {
     return this._connection.findOne({ email });
+  }
+
+  async patchUser(id: string, userData: Partial<UserUpdateData>) {
+    const user = await this._connection.findById(id);
+
+    if (!user) {
+      return { statusCode: 404, message: "User not found" };
+    }
+
+    const updatedUser = await this._connection.findByIdAndUpdate(
+      id,
+      { $set: userData },
+      { new: true } 
+    );
+
+    return updatedUser;
   }
 }
 
