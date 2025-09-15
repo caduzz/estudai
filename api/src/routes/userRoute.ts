@@ -4,6 +4,7 @@ import UserController from '../controllers/userController';
 const router: Router = Router();
 const controller = new UserController();
 
+router.get('/users/email/:email', (req, res) => controller.findByEmail(req, res));
 router.post('/', (req, res) => controller.registerUser(req, res));
 
 export default router;
